@@ -164,7 +164,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../common;../../host;../../host/pc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/asiosdk/common;./include/asio/pc;./include/asio;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -227,17 +227,17 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\asio.cpp" />
-    <ClCompile Include="..\asiodrivers.cpp" />
-    <ClCompile Include="..\pc\asiolist.cpp" />
+    <ClCompile Include="include\asiosdk\common\asio.cpp" />
+    <ClCompile Include="include\asio\asiodrivers.cpp" />
+    <ClCompile Include="include\asio\pc\asiolist.cpp" />
     <ClCompile Include="asioplayback.cpp" />
     <ClCompile Include="engine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\common\asio.h" />
-    <ClInclude Include="..\asiodrivers.h" />
-    <ClInclude Include="..\ginclude.h" />
-    <ClInclude Include="..\pc\asiolist.h" />
+    <ClInclude Include="include\asiosdk\common\asio.h" />
+    <ClInclude Include="include\asio\asiodrivers.h" />
+    <ClInclude Include="include\asio\asio.h" />
+    <ClInclude Include="include\asio\pc\asiolist.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\asio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\asiodrivers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\pc\asiolist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="asioplayback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\asio\asiodrivers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\asiosdk\common\asio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\asio\pc\asiolist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\common\asio.h">
+    <ClInclude Include="include\asio\asiodrivers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\asiodrivers.h">
+    <ClInclude Include="include\asio\pc\asiolist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\pc\asiolist.h">
+    <ClInclude Include="include\asio\asio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\ginclude.h">
+    <ClInclude Include="include\asiosdk\common\asio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

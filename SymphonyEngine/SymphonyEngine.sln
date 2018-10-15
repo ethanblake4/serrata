@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hostsample", "hostsample.vcxproj", "{1E10ECB0-0666-474F-A010-660E7CE9DC00}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "symphony", "SymphonyEngine.vcxproj", "{1E10ECB0-0666-474F-A010-660E7CE9DC00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +26,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2D2882C0-3663-46EE-B505-891D20D439E1}
+		SolutionGuid = {8666AC87-D282-4624-9DA9-EC0DB731F93D}
 	EndGlobalSection
 EndGlobal
