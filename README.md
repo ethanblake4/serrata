@@ -1,5 +1,5 @@
 # Serrata
-Searrta is a DAW built for use in VR and, in the future, AR. Its Frontend uses Unity for its 3D component and physics features; this part is separate from the Audio Engine, which is written in C++. The core components of Serrata are its Frontend, Audio Engine, and AAP plugin spec.
+Serrata is a DAW built for use in VR and, in the future, AR. Its Frontend uses Unity for its 3D component and physics features; this part is separate from the Audio Engine, which is written in C++. The core components of Serrata are its Frontend, Audio Engine, and AAP plugin spec.
 
 ## Frontend
 Serrata's frontend is intented to be intuitive and straightforward for people familiar with DAWs, but improved in as many ways as possible via VR support.
