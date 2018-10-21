@@ -30,7 +30,7 @@ public sealed class Symphony
             
             int umDriverCount = 0; 
             IntPtr umDriverNames = IntPtr.Zero;
-            getDrivers(out umDriverNames, out umDriverCount);
+            GetDrivers(out umDriverNames, out umDriverCount);
             _audioDrivers = InteropUtil.ConvertStrArray(umDriverNames, umDriverCount).ToList();
             return _audioDrivers;
         }
@@ -39,7 +39,7 @@ public sealed class Symphony
 
     private Symphony()
     {
-        initializeEngine();
+        InitializeEngine();
     }
     
     

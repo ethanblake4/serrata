@@ -1,12 +1,5 @@
-// hostsample.cpp : a simple ASIO host example.
-// - instantiates the driver
-// - get the information from the driver
-// - built up some audio channels
-// - plays silence for 20 seconds
-// - destruct the driver
-// Note: This sample cannot work with the "ASIO DirectX Driver" as it does
-//       not have a valid Application Window handle, which is used as sysRef
-//       on the Windows platform.
+// asioplayback.cpp : Interfaces with ASIO devices
+
 
 #include <cstdio>
 #include <cmath>
@@ -129,18 +122,29 @@ long initAsioStaticData (DriverInfo *asioDriverInfo)
 				printf ("ASIOGetSampleRate (sampleRate: %f);\n", asioDriverInfo->sampleRate);
 				if (asioDriverInfo->sampleRate <= 0.0 || asioDriverInfo->sampleRate > 96000.0)
 				{
-					// Driver does not store it's internal sample rate, so set it to a know one.
-					// Usually you should check beforehand, that the selected sample rate is valid
-					// with ASIOCanSampleRate().
-					if(ASIOSetSampleRate(44100.0) == ASE_OK)
+					// Driver does not store it's internal sample rate, so set it to a known one.
+					ASIOSampleRate commonSampleRates[5] = {44100.0, 48000.0, 96000.0, 88200.0, 192000.0};
+
+					auto found_sr = false;
+					for (ASIOSampleRate commonSampleRate : commonSampleRates)
 					{
-						if(ASIOGetSampleRate(&asioDriverInfo->sampleRate) == ASE_OK)
-							printf ("ASIOGetSampleRate (sampleRate: %f);\n", asioDriverInfo->sampleRate);
+						if (!ASIOCanSampleRate(commonSampleRate)) continue;
+						
+						if (ASIOSetSampleRate(commonSampleRate) == ASE_OK)
+						{
+							if (ASIOGetSampleRate(&asioDriverInfo->sampleRate) == ASE_OK) {
+								printf("ASIOGetSampleRate (sampleRate: %f);\n", asioDriverInfo->sampleRate);
+								found_sr = true;
+							}
+							else
+								return -6;
+						}
 						else
-							return -6;
+							return -5;
 					}
-					else
-						return -5;
+
+					if (!found_sr) return -7;
+					
 				}
 
 				// check wether the driver requires the ASIOOutputReady() optimization
@@ -211,7 +215,7 @@ ASIOTime *bufferSwitchTimeInfo(ASIOTime *timeInfo, long index, ASIOBool processN
 	// perform the processing
 	for (int i = 0; i < asioDriverInfo.inputBuffers + asioDriverInfo.outputBuffers; i++)
 	{
-		if (asioDriverInfo.bufferInfos[i].isInput == false)
+		if (!static_cast<bool>(asioDriverInfo.bufferInfos[i].isInput))
 		{
 			// OK do processing for the outputs only
 			switch (asioDriverInfo.channelInfos[i].type)
@@ -224,7 +228,7 @@ ASIOTime *bufferSwitchTimeInfo(ASIOTime *timeInfo, long index, ASIOBool processN
 				break;
 			case ASIOSTInt32LSB: {
 
-				float* mbuf = (float*)asioDriverInfo.bufferInfos[i].buffers[index];
+				auto mbuf = static_cast<float*>(asioDriverInfo.bufferInfos[i].buffers[index]);
 
 				for (int q = 0; q < buffSize; q++) {
 					*mbuf++ = Saturate(cos(q/sineScalar), 1.f) * 2147483647.f;
@@ -287,17 +291,15 @@ ASIOTime *bufferSwitchTimeInfo(ASIOTime *timeInfo, long index, ASIOBool processN
 //	if (processedSamples >= asioDriverInfo.sampleRate * TEST_RUN_TIME)	// roughly measured
 //		asioDriverInfo.stopped = true;
 //	else
-		processedSamples += buffSize;
+	processedSamples += buffSize;
 
 	return 0L;
 }
 
-
-
 //----------------------------------------------------------------------------------
 void bufferSwitch(long index, ASIOBool processNow)
 {	// the actual processing callback.
-	// Beware that this is normally in a seperate thread, hence be sure that you take care
+	// Beware that this is normally in a separate thread, hence be sure that you take care
 	// about thread synchronization. This is omitted here for simplicity.
 
 	// as this is a "back door" into the bufferSwitchTimeInfo a timeInfo needs to be created

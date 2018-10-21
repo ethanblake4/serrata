@@ -4,4 +4,5 @@
 #include "asiolist.h"
 
 int initAsioPlayback();
-AsioDriverList* get_drivers();
+AsioDriverList* AsioGetDrivers();
+int setupDriver(char* driverName);
