@@ -5,20 +5,16 @@
 
 extern "C" {
 
-	__declspec(dllexport) int initializeEngine() {
+	__declspec(dllexport) int InitializeEngine() {
 		return initAsioPlayback();
 	}
 
-	__declspec(dllexport) int getAudioDevices() {
-		return 0;
-	}
-
-	__declspec(dllexport) void __stdcall getDrivers(
+	__declspec(dllexport) void __stdcall GetDrivers(
 		/*[out]*/ char*** drivers_out,
 		/*[out]*/ int* count_out)
 	{
 
-		AsioDriverList* asio_drivers = get_drivers();
+		AsioDriverList* asio_drivers = AsioGetDrivers();
 		ASIODRVSTRUCT * drv = asio_drivers->lpdrvlist;
 
 		*count_out = asio_drivers->numdrv;

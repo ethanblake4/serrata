@@ -8,9 +8,9 @@
 //       not have a valid Application Window handle, which is used as sysRef
 //       on the Windows platform.
 
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <cstdio>
+#include <cmath>
+#include "string.h"
 #include "asiosys.h"
 #include "asio.h"
 #include "asiodrivers.h"
@@ -84,7 +84,7 @@ typedef struct DriverInfo
 } DriverInfo;
 
 
-DriverInfo asioDriverInfo = {0};
+DriverInfo asioDriverInfo = {{0}};
 ASIOCallbacks asioCallbacks;
 
 //----------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ void createAsioDrivers();
 
 // internal prototypes (required for the Metrowerks CodeWarrior compiler)
 int main(int argc, char* argv[]);
-long init_asio_static_data (DriverInfo *asioDriverInfo);
+long initAsioStaticData (DriverInfo *asioDriverInfo);
 ASIOError create_asio_buffers (DriverInfo *asioDriverInfo);
 unsigned long get_sys_reference_time();
 
@@ -109,7 +109,7 @@ long asioMessages(long selector, long value, void* message, double* opt);
 float sineScalar = 1.f;
 
 //----------------------------------------------------------------------------------
-long init_asio_static_data (DriverInfo *asioDriverInfo)
+long initAsioStaticData (DriverInfo *asioDriverInfo)
 {	// collect the informational data of the driver
 	// get the number of available channels
 	if(ASIOGetChannels(&asioDriverInfo->inputChannels, &asioDriverInfo->outputChannels) == ASE_OK)
@@ -205,22 +205,6 @@ ASIOTime *bufferSwitchTimeInfo(ASIOTime *timeInfo, long index, ASIOBool processN
 	// get the system reference time
 	asioDriverInfo.sysRefTime = get_sys_reference_time();
 
-#if WINDOWS && _DEBUG
-	// a few debug messages for the Windows device driver developer
-	// tells you the time when driver got its interrupt and the delay until the app receives
-	// the event notification.
-	static double last_samples = 0;
-	char tmp[128];
-	sprintf (tmp, "diff: %d / %d ms / %d ms / %d samples / %d type                \n", 
-		asioDriverInfo.sysRefTime - (long)(asioDriverInfo.nanoSeconds / 1000000.0), 
-		asioDriverInfo.sysRefTime, 
-		(long)(asioDriverInfo.nanoSeconds / 1000000.0), 
-		(long)(asioDriverInfo.samples - last_samples),
-		asioDriverInfo.channelInfos[7].type);
-	printf (tmp);
-	last_samples = asioDriverInfo.samples;
-#endif
-
 	// buffer size in samples
 	long buffSize = asioDriverInfo.preferredSize;
 
@@ -289,6 +273,7 @@ ASIOTime *bufferSwitchTimeInfo(ASIOTime *timeInfo, long index, ASIOBool processN
 			case ASIOSTInt32MSB24:		// 32 bit data with 24 bit alignment
 				memset (asioDriverInfo.bufferInfos[i].buffers[index], 0, buffSize * 4);
 				break;
+			default: break;
 			}
 		}
 	}
@@ -400,6 +385,7 @@ long asioMessages(long selector, long value, void* message, double* opt)
 			// to do.
 			ret = 0;
 			break;
+	default: break;
 	}
 	return ret;
 }
@@ -463,7 +449,7 @@ ASIOError create_asio_buffers (DriverInfo *asioDriverInfo)
 			// (output latency is the time the first sample in the currently returned audio block requires to get to the output)
 			result = ASIOGetLatencies(&asioDriverInfo->inputLatency, &asioDriverInfo->outputLatency);
 			if (result == ASE_OK)
-				printf ("ASIOGetLatencies (input: %d, output: %d);\n", asioDriverInfo->inputLatency, asioDriverInfo->outputLatency);
+				printf ("ASIOGetLatencies (input: %ld, output: %ld);\n", asioDriverInfo->inputLatency, asioDriverInfo->outputLatency);
 		}
 	}
 	return result;
@@ -475,7 +461,7 @@ int initAsioPlayback()
 	return asioDrivers != nullptr;
 }
 
-AsioDriverList* get_drivers()
+AsioDriverList* AsioGetDrivers()
 {
 	return asioDrivers;
 }
@@ -489,13 +475,13 @@ int setupDriver(char* driverName)
 		// initialize the driver
 		if (ASIOInit(&asioDriverInfo.driverInfo) == ASE_OK)
 		{
-			printf("asioVersion:   %d\n"
-				"driverVersion: %d\n"
+			printf("asioVersion:   %ld\n"
+				"driverVersion: %ld\n"
 				"Name:          %s\n"
 				"ErrorMessage:  %s\n",
 				asioDriverInfo.driverInfo.asioVersion, asioDriverInfo.driverInfo.driverVersion,
 				asioDriverInfo.driverInfo.name, asioDriverInfo.driverInfo.errorMessage);
-			if (init_asio_static_data(&asioDriverInfo) == 0)
+			if (initAsioStaticData(&asioDriverInfo) == 0)
 			{
 				ASIOControlPanel(); //you might want to check whether the ASIOControlPanel() can open
 
@@ -518,11 +504,11 @@ int setupDriver(char* driverName)
 							unsigned long dummy;
 							Delay(6, &dummy);
 #endif
-							fprintf(stdout, "%d ms / %d ms / %d samples / %d type",
+							fprintf(stdout, "%ld ms / %ld ms / %ld samples / %ld type",
 								asioDriverInfo.sysRefTime,
-								(long)(asioDriverInfo.nanoSeconds / 1000000.0),
-								(long)asioDriverInfo.samples,
-								(long)asioDriverInfo.channelInfos[0].type);
+								static_cast<long>(asioDriverInfo.nanoSeconds / 1000000.0),
+								static_cast<long>(asioDriverInfo.samples),
+								static_cast<long>(asioDriverInfo.channelInfos[0].type));
 
 							// create a more readable time code format (the quick and dirty way)
 							double remainder = asioDriverInfo.tcSamples;
@@ -532,7 +518,8 @@ int setupDriver(char* driverName)
 							remainder -= minutes * asioDriverInfo.sampleRate * 60;
 							long seconds = (long)(remainder / asioDriverInfo.sampleRate);
 							remainder -= seconds * asioDriverInfo.sampleRate;
-							fprintf(stdout, " / TC: %2.2d:%2.2d:%2.2d:%5.5d", (long)hours, (long)minutes, (long)seconds, (long)remainder);
+							fprintf(stdout, " / TC: %2.2ld:%2.2ld:%2.2ld:%5.5ld", static_cast<long>(hours),
+							        static_cast<long>(minutes), static_cast<long>(seconds), static_cast<long>(remainder));
 
 							fprintf(stdout, "     \r");
 #if !MAC
