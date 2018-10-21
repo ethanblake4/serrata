@@ -14,6 +14,13 @@ bool loadAsioDriver(char *name)
 	return false;
 }
 
+void createAsioDrivers();
+
+void createAsioDrivers()
+{
+	asioDrivers = new AsioDrivers();
+}
+
 //------------------------------------------------------------------------------------
 
 #if MAC

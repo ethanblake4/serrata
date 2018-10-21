@@ -91,6 +91,7 @@ ASIOCallbacks asioCallbacks;
 // some external references
 extern AsioDrivers* asioDrivers;
 bool loadAsioDriver(char *name);
+void createAsioDrivers();
 
 // internal prototypes (required for the Metrowerks CodeWarrior compiler)
 int main(int argc, char* argv[]);
@@ -470,43 +471,55 @@ ASIOError create_asio_buffers (DriverInfo *asioDriverInfo)
 
 int initAsioPlayback()
 {
+	createAsioDrivers();
+	return asioDrivers != nullptr;
+}
+
+AsioDriverList* get_drivers()
+{
+	return asioDrivers;
+}
+
+int setupDriver(char* driverName)
+{
+
 	// load the driver, this will setup all the necessary internal data structures
-	if (loadAsioDriver (ASIO_DRIVER_NAME))
+	if (loadAsioDriver(driverName))
 	{
 		// initialize the driver
-		if (ASIOInit (&asioDriverInfo.driverInfo) == ASE_OK)
+		if (ASIOInit(&asioDriverInfo.driverInfo) == ASE_OK)
 		{
-			printf ("asioVersion:   %d\n"
-					"driverVersion: %d\n"
-					"Name:          %s\n"
-					"ErrorMessage:  %s\n",
-					asioDriverInfo.driverInfo.asioVersion, asioDriverInfo.driverInfo.driverVersion,
-					asioDriverInfo.driverInfo.name, asioDriverInfo.driverInfo.errorMessage);
-			if (init_asio_static_data (&asioDriverInfo) == 0)
+			printf("asioVersion:   %d\n"
+				"driverVersion: %d\n"
+				"Name:          %s\n"
+				"ErrorMessage:  %s\n",
+				asioDriverInfo.driverInfo.asioVersion, asioDriverInfo.driverInfo.driverVersion,
+				asioDriverInfo.driverInfo.name, asioDriverInfo.driverInfo.errorMessage);
+			if (init_asio_static_data(&asioDriverInfo) == 0)
 			{
-				 ASIOControlPanel(); //you might want to check wether the ASIOControlPanel() can open
+				ASIOControlPanel(); //you might want to check whether the ASIOControlPanel() can open
 
-				// set up the asioCallback structure and create the ASIO data buffer
+									// set up the asioCallback structure and create the ASIO data buffer
 				asioCallbacks.bufferSwitch = &bufferSwitch;
 				asioCallbacks.sampleRateDidChange = &sampleRateChanged;
 				asioCallbacks.asioMessage = &asioMessages;
 				asioCallbacks.bufferSwitchTimeInfo = &bufferSwitchTimeInfo;
-				if (create_asio_buffers (&asioDriverInfo) == ASE_OK)
+				if (create_asio_buffers(&asioDriverInfo) == ASE_OK)
 				{
 					if (ASIOStart() == ASE_OK)
 					{
 						// Now all is up and running
-						fprintf (stdout, "\nASIO Driver started succefully.\n\n");
+						fprintf(stdout, "\nASIO Driver started succefully.\n\n");
 						while (!asioDriverInfo.stopped)
 						{
 #if WINDOWS
 							Sleep(100);	// goto sleep for 100 milliseconds
 #elif MAC
 							unsigned long dummy;
-							Delay (6, &dummy);
+							Delay(6, &dummy);
 #endif
-							fprintf (stdout, "%d ms / %d ms / %d samples / %d type", 
-								asioDriverInfo.sysRefTime, 
+							fprintf(stdout, "%d ms / %d ms / %d samples / %d type",
+								asioDriverInfo.sysRefTime,
 								(long)(asioDriverInfo.nanoSeconds / 1000000.0),
 								(long)asioDriverInfo.samples,
 								(long)asioDriverInfo.channelInfos[0].type);
@@ -519,12 +532,12 @@ int initAsioPlayback()
 							remainder -= minutes * asioDriverInfo.sampleRate * 60;
 							long seconds = (long)(remainder / asioDriverInfo.sampleRate);
 							remainder -= seconds * asioDriverInfo.sampleRate;
-							fprintf (stdout, " / TC: %2.2d:%2.2d:%2.2d:%5.5d", (long)hours, (long)minutes, (long)seconds, (long)remainder);
+							fprintf(stdout, " / TC: %2.2d:%2.2d:%2.2d:%5.5d", (long)hours, (long)minutes, (long)seconds, (long)remainder);
 
-							fprintf (stdout, "     \r");
-							#if !MAC
-							fflush (stdout);
-							#endif
+							fprintf(stdout, "     \r");
+#if !MAC
+							fflush(stdout);
+#endif
 						}
 						ASIOStop();
 					}

@@ -38,10 +38,10 @@
     <ClInclude Include="include\asio\pc\asiolist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\asio\asio.h">
+    <ClInclude Include="include\asiosdk\common\asio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\asiosdk\common\asio.h">
+    <ClInclude Include="asioplayback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
