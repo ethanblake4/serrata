@@ -208,6 +208,13 @@ MonoBehaviour:
   blendNormalDistanceNegative: {x: 0, y: 0, z: 0}
   boxSideFadePositive: {x: 1, y: 1, z: 1}
   boxSideFadeNegative: {x: 1, y: 1, z: 1}
+  editorAdvancedModeBlendDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendDistance: 0
+  editorAdvancedModeBlendNormalDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendNormalDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendNormalDistance: 0
+  editorAdvancedModeEnabled: 0
   proxyVolumeComponent: {fileID: 0}
 --- !u!23 &168218575
 MeshRenderer:
@@ -251,6 +258,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 168218571}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &224772768 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1281567930798800, guid: ca2a18daa91a3b04ca17d8b3c0c192d8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1275443619}
+--- !u!114 &224772769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 224772768}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19b6c91bdd895a04ab35ff3b53243860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &300715998
 Prefab:
   m_ObjectHideFlags: 0
@@ -496,6 +519,13 @@ MonoBehaviour:
   blendNormalDistanceNegative: {x: 0, y: 0, z: 0}
   boxSideFadePositive: {x: 1, y: 1, z: 1}
   boxSideFadeNegative: {x: 1, y: 1, z: 1}
+  editorAdvancedModeBlendDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendDistance: 0
+  editorAdvancedModeBlendNormalDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendNormalDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendNormalDistance: 0
+  editorAdvancedModeEnabled: 0
   proxyVolumeComponent: {fileID: 0}
 --- !u!23 &1037846707
 MeshRenderer:
@@ -643,7 +673,7 @@ MonoBehaviour:
     enableSubsurfaceScattering: 1
     enableTransmission: 1
     enableAtmosphericScattering: 1
-    enableVolumetric: 1
+    enableVolumetrics: 1
     diffuseGlobalDimmer: 1
     specularGlobalDimmer: 1
     enableForwardRenderingOnly: 0
@@ -769,6 +799,7 @@ MonoBehaviour:
       size: 256
       exposure: 0.12
     overlaySettings:
+      linearDepth: 0
       motionColorIntensity: 4
       motionGridSize: 64
       colorBlindnessType: 0
@@ -878,7 +909,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1547029145}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.008, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1444734336}
@@ -1145,6 +1176,7 @@ MonoBehaviour:
   shadowResolution: 1024
   shadowDimmer: 1
   shadowFadeDistance: 10000
+  contactShadows: 0
   viewBiasMin: 0.2
   viewBiasMax: 10
   viewBiasScale: 1
@@ -1187,7 +1219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  version: 1.1
   directionalIntensity: 10
   punctualIntensity: 600
   areaIntensity: 200
@@ -1195,6 +1227,7 @@ MonoBehaviour:
   m_InnerSpotPercent: 0
   lightDimmer: 1
   volumetricDimmer: 1
+  lightUnit: 2
   fadeDistance: 10000
   affectDiffuse: 1
   affectSpecular: 1
@@ -1210,6 +1243,8 @@ MonoBehaviour:
   useOldInspector: 0
   featuresFoldout: 1
   showAdditionalSettings: 0
+  displayLightIntensity: 10
+  displayAreaLightEmissiveMesh: 0
 --- !u!1 &2059789766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1340,13 @@ MonoBehaviour:
   blendNormalDistanceNegative: {x: 0, y: 0, z: 0}
   boxSideFadePositive: {x: 1, y: 1, z: 1}
   boxSideFadeNegative: {x: 1, y: 1, z: 1}
+  editorAdvancedModeBlendDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendDistance: 0
+  editorAdvancedModeBlendNormalDistancePositive: {x: 0, y: 0, z: 0}
+  editorAdvancedModeBlendNormalDistanceNegative: {x: 0, y: 0, z: 0}
+  editorSimplifiedModeBlendNormalDistance: 0
+  editorAdvancedModeEnabled: 0
   proxyVolumeComponent: {fileID: 0}
 --- !u!23 &2059789770
 MeshRenderer:

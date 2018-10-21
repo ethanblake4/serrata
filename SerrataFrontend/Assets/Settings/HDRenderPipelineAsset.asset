@@ -22,7 +22,7 @@ MonoBehaviour:
     enableSubsurfaceScattering: 1
     enableTransmission: 1
     enableAtmosphericScattering: 1
-    enableVolumetric: 1
+    enableVolumetrics: 1
     diffuseGlobalDimmer: 1
     specularGlobalDimmer: 1
     enableForwardRenderingOnly: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
     enableAsyncCompute: 1
     enableOpaqueObjects: 1
     enableTransparentObjects: 1
-    enableMSAA: 1
+    enableMSAA: 0
     enableShadowMask: 1
     lightLoopSettings:
       enableTileAndCluster: 1
@@ -55,9 +55,11 @@ MonoBehaviour:
     supportSSAO: 1
     supportSubsurfaceScattering: 1
     supportOnlyForward: 1
-    enableUltraQualitySSS: 0
-    supportVolumetric: 1
+    increaseSssSampleCount: 0
+    supportVolumetrics: 1
+    increaseResolutionOfVolumetrics: 0
     supportRuntimeDebugDisplay: 1
+    supportDitheringCrossFade: 1
     supportDBuffer: 0
     supportMSAA: 1
     msaaSampleCount: 4
@@ -81,6 +83,9 @@ MonoBehaviour:
     shadowInitParams:
       shadowAtlasWidth: 4096
       shadowAtlasHeight: 4096
+      maxPointLightShadows: 6
+      maxSpotLightShadows: 12
+      maxDirectionalLightShadows: 1
     decalSettings:
       drawDistance: 1000
       atlasWidth: 4096

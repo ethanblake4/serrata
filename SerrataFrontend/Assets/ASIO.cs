@@ -32,6 +32,8 @@ public class ASIO : MonoBehaviour {
 			out UnmanagedStringArray,
 			out iStringsCountReceiver
 		);
+		
+		Debug.Log(iStringsCountReceiver.ToString());
 
 		string[] ManagedStringArray = null;
 

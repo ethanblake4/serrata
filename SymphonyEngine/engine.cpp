@@ -24,14 +24,14 @@ extern "C" {
 		*count_out = asio_drivers->numdrv;
 		size_t stSizeOfArray = sizeof(char*) * asio_drivers->numdrv;
 
-		*drivers_out = static_cast<char**>(::CoTaskMemAlloc(stSizeOfArray));
+		*drivers_out = (char**)::CoTaskMemAlloc(stSizeOfArray);
 		memset(*drivers_out, 0, stSizeOfArray);
 
 		for (int i = 0; i < asio_drivers->numdrv; i++)
 		{
-			(*drivers_out)[i] = static_cast<char*>(::CoTaskMemAlloc(strlen(drv->drvname) + 1));
+			(*drivers_out)[i] = (char*)::CoTaskMemAlloc(strlen(drv->drvname) + 1);
 			strcpy((*drivers_out)[i], drv->drvname);
-			drv++;
+			drv = drv->next;
 		}
 
 
